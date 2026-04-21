@@ -1,0 +1,45 @@
+{
+  "mcpServers": {
+    "jenkins-pipeline-agent": {
+      "name": "Jenkins Pipeline Agent",
+      "description": "AI agent tools for generating, validating, and fixing Jenkins CI/CD pipelines",
+      "tools": [
+        {
+          "name": "generate_pipeline",
+          "description": "Generates a complete declarative Jenkinsfile. Never hardcodes credentials.",
+          "inputSchema": {
+            "type": "object",
+            "required": ["projectType", "repoUrl", "buildTool"],
+            "properties": {
+              "projectType": { "type": "string", "enum": ["spring-boot", "nodejs", "python"] },
+              "repoUrl": { "type": "string" },
+              "buildTool": { "type": "string", "enum": ["maven", "gradle", "npm", "yarn", "pip", "poetry"] },
+              "branch": { "type": "string", "default": "main" },
+              "deployTarget": { "type": "string", "enum": ["docker", "kubernetes", "ec2", "none"], "default": "none" },
+              "dockerRegistry": { "type": "string" },
+              "enableNotifications": { "type": "boolean", "default": false }
+            }
+          }
+        },
+        {
+          "name": "validate_pipeline",
+          "description": "Validates a Jenkinsfile for syntax errors, security issues, and best practices.",
+          "inputSchema": {
+            "type": "object",
+            "required": ["jenkinsfileContent"],
+            "properties": { "jenkinsfileContent": { "type": "string" } }
+          }
+        },
+        {
+          "name": "suggest_fixes",
+          "description": "Suggests fixes for a failing Jenkins pipeline based on error logs.",
+          "inputSchema": {
+            "type": "object",
+            "required": ["errorLog"],
+            "properties": { "errorLog": { "type": "string" }, "jenkinsfileContent": { "type": "string" } }
+          }
+        }
+      ]
+    }
+  }
+}
